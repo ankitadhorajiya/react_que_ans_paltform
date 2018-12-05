@@ -1,6 +1,6 @@
 var axios = require('axios')
 
-let apiHost = 'http://' + (process.env.API_HOST || 'localhost') + ':3000'
+let apiHost = (process.env.API_HOST || 'http://localhost:3000');
 
 module.exports = {
   authenticateUser: function(email, password) {
