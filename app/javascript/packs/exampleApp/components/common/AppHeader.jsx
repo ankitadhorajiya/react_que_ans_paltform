@@ -16,14 +16,34 @@ class AppHeaderComponent extends React.Component {
           <Navbar.Collapse>
             <Nav>
               <LinkContainer exact to="/">
-                <NavItem eventKey={1}>
+                <NavItem eventKey={2}>
                   Home
+                </NavItem>
+              </LinkContainer>
+              <LinkContainer exact to="/">
+                <NavItem eventKey={3}>
+                  Portfolio
+                </NavItem>
+              </LinkContainer>
+              <LinkContainer exact to="/">
+                <NavItem eventKey={4}>
+                  Services
+                </NavItem>
+              </LinkContainer>
+              <LinkContainer exact to="/blogs">
+                <NavItem eventKey={5}>
+                  Blog
+                </NavItem>
+              </LinkContainer>
+              <LinkContainer exact to="/">
+                <NavItem eventKey={6}>
+                  More
                 </NavItem>
               </LinkContainer>
 
               {this.props.appState.pages.map(page =>
                   <LinkContainer key={'page_' + page.id} exact to={'/page/' + page.id}>
-                    <NavItem eventKey={'2.' + page.id}>
+                    <NavItem eventKey={'7.' + page.id}>
                       {page.title}
                     </NavItem>
                   </LinkContainer>
@@ -32,15 +52,14 @@ class AppHeaderComponent extends React.Component {
             <Nav pullRight>
               {!this.props.appState.jwt &&
               <LinkContainer exact to="/sign-in">
-                <NavItem eventKey={3}>
+                <NavItem eventKey={8}>
                   Sign In
                 </NavItem>
               </LinkContainer>
               }
-
               {this.props.appState.jwt &&
               <LinkContainer exact to="/sign-out">
-                <NavItem eventKey={4}>
+                <NavItem eventKey={9}>
                   Sign Out
                 </NavItem>
               </LinkContainer>

@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import AppHeader from '../../components/common/AppHeader';
 import AuthSignIn from '../../components/common/AuthSignIn';
 import AuthSignOut from '../../components/common/AuthSignOut';
+import Dashboard from '../../components/dashboard';
+import Blog from '../../components/blog/blog';
 
 // import PageHome from './PageHome.js'
 // import Page from './Page.js'
@@ -51,11 +53,22 @@ class TokenAuthComponent extends React.Component {
                   )}
               />
             }
-            {this.state.jwt &&
-              <div className='container'>
-                Main Page
-              </div>
-            }
+
+            <div className='container'>
+              <Route
+                  exact path="/"
+                  render={(routeProps) => (
+                      <Dashboard {...routeProps} appState={this.state}/>
+                  )}
+              />
+
+              <Route
+                  exact path="/blogs"
+                  render={(routeProps) => (
+                      <Blog {...routeProps} appState={this.state}/>
+                  )}
+              />
+            </div>
           </div>
         </Router>
     )
