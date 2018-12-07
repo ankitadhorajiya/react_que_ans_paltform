@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     post 'user/token' => 'user_token#create'
     get 'users/current' => 'users#current'
 
-    resources :blogs, only: %i[index]
+    resources :blogs, only: %i[index show]
   end
 
   # Application Entry-Point

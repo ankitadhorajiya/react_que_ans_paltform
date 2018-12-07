@@ -1,4 +1,5 @@
 import React from 'react'
+import {LinkContainer} from "react-router-bootstrap";
 
 const Api = require('../../middleware/Api');
 const BLOG_TYPE = require('../../constants/const').BlogType;
@@ -23,15 +24,26 @@ class RecentlyPosted extends React.Component {
       });
     })
   }
+
+  renderBlogs(blogs) {
+    let blogList = blogs.map(blog => {
+      let href = 'blogs/' + blog.id ;
+      return <LinkContainer exact to={href} key={blog.id}>
+        <a className='list-group-item' href='#' > { blog.title } </a>
+      </LinkContainer>
+    });
+    return blogList;
+  }
+
   render() {
     return (
       <div className='col-md-3'>
-        <div className="panel panel-default">
+        <div className="panel panel-info">
           <div className="panel-heading">
             <h3 className="panel-title">Recently Posted</h3>
           </div>
-          <div className="panel-body">
-            Recently Posted Blogs
+          <div className="list-group">
+            { this.renderBlogs(this.state.blogs) }
           </div>
         </div>
       </div>

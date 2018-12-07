@@ -41,5 +41,14 @@ module.exports = {
       .catch(function (error) {
         return undefined
       })
+  },
+  getBlog: function(id) {
+    return axios.get(API_HOST + '/api/blogs/' + id)
+        .then(function(response){
+          return response.data
+        })
+        .catch(function (error) {
+          return undefined
+        })
   }
 };

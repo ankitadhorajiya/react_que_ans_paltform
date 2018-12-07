@@ -7,10 +7,8 @@ import AppHeader from '../../components/common/AppHeader';
 import AuthSignIn from '../../components/common/AuthSignIn';
 import AuthSignOut from '../../components/common/AuthSignOut';
 import Dashboard from '../../components/dashboard';
-import Blog from '../../components/blog/blog';
-
-// import PageHome from './PageHome.js'
-// import Page from './Page.js'
+import BlogPage from '../blog/blogPage';
+import Blog from '../blog/blog';
 
 const Api = require('../../middleware/Api');
 
@@ -26,8 +24,6 @@ class TokenAuthComponent extends React.Component {
           <div>
 
             <AppHeader appState={this.state} />
-
-            {/*<Route exact path="/" component={PageHome} />*/}
 
             {/*<Route*/}
                 {/*exact path='/page/:id'*/}
@@ -47,26 +43,33 @@ class TokenAuthComponent extends React.Component {
 
             {this.state.jwt &&
               <Route
-                  exact path="/sign-out"
-                  render={(routeProps) => (
-                      <AuthSignOut {...routeProps} propagateSignOut={this.propagateSignOut} />
-                  )}
+                exact path="/sign-out"
+                render={(routeProps) => (
+                    <AuthSignOut {...routeProps} propagateSignOut={this.propagateSignOut} />
+                )}
               />
             }
 
             <div className='container'>
               <Route
-                  exact path="/"
-                  render={(routeProps) => (
-                      <Dashboard {...routeProps} appState={this.state}/>
-                  )}
+                exact path="/"
+                render={(routeProps) => (
+                    <Dashboard {...routeProps} appState={this.state}/>
+                )}
               />
 
               <Route
-                  exact path="/blogs"
-                  render={(routeProps) => (
-                      <Blog {...routeProps} appState={this.state}/>
-                  )}
+                exact path="/blogs"
+                render={(routeProps) => (
+                    <BlogPage {...routeProps} appState={this.state}/>
+                )}
+              />
+
+              <Route
+                exact path='/blogs/:id'
+                render={(routeProps) => (
+                  <Blog {...routeProps} appState={this.state} />
+                )}
               />
             </div>
           </div>
