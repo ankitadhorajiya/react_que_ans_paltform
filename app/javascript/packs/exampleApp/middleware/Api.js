@@ -44,11 +44,11 @@ module.exports = {
   },
   getBlog: function(id) {
     return axios.get(API_HOST + '/api/blogs/' + id)
-        .then(function(response){
-          return response.data
-        })
-        .catch(function (error) {
-          return undefined
-        })
+      .then(function(response){
+        return response.data
+      })
+      .catch(function (error) {
+        return undefined
+      })
   }
 };

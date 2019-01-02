@@ -22,15 +22,7 @@ class TokenAuthComponent extends React.Component {
     return (
         <Router>
           <div>
-
             <AppHeader appState={this.state} />
-
-            {/*<Route*/}
-                {/*exact path='/page/:id'*/}
-                {/*render={(routeProps) => (*/}
-                    {/*<Page {...routeProps} appState={this.state} />*/}
-                {/*)}*/}
-            {/*/>*/}
 
             {!this.state.jwt &&
             <Route
@@ -95,41 +87,33 @@ class TokenAuthComponent extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = this.defaultState()
+    this.state = this.defaultState();
 
-    this.propagateSignIn = this.propagateSignIn.bind(this)
-    this.propagateSignOut = this.propagateSignOut.bind(this)
+    this.propagateSignIn = this.propagateSignIn.bind(this);
+    this.propagateSignOut = this.propagateSignOut.bind(this);
   }
 
   propagateSignIn(jwt, history = undefined) {
     const { cookies } = this.props
-    cookies.set(this.state.cookieName, jwt, { path: '/' })
+    cookies.set(this.state.cookieName, jwt, { path: '/' });
     this.getUser(history)
   }
 
   propagateSignOut(history = undefined) {
-    const { cookies } = this.props
-    cookies.remove(this.state.cookieName)
+    const { cookies } = this.props;
+    cookies.remove(this.state.cookieName);
     this.setState({
       email: undefined,
       user_id: undefined,
       jwt: undefined
-    })
+    });
     if (history) history.push('/')
   }
 
-  getPages() {
-    Api.getPages().then(response => {
-      this.setState({
-        pages: response
-      })
-    })
-  }
-
   getUser(history = undefined) {
-    const { cookies } = this.props
-    let jwt = cookies.get(this.state.cookieName)
-    if (!jwt) return null
+    const { cookies } = this.props;
+    let jwt = cookies.get(this.state.cookieName);
+    if (!jwt) return null;
 
     Api.getCurrentUser(jwt).then(response => {
       if (response !== undefined) {
@@ -137,12 +121,12 @@ class TokenAuthComponent extends React.Component {
           email: response.email,
           user_id: response.id,
           jwt: jwt
-        })
+        });
         if (history) history.push('/')
       }
       else {
         // user has cookie but cannot load current user
-        cookies.remove(this.state.cookieName)
+        cookies.remove(this.state.cookieName);
         this.setState({
           email: undefined,
           user_id: undefined,

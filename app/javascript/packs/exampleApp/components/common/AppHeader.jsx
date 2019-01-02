@@ -15,31 +15,31 @@ class AppHeaderComponent extends React.Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav>
-              <LinkContainer exact to="/">
-                <NavItem eventKey={2}>
-                  Home
-                </NavItem>
-              </LinkContainer>
-              <LinkContainer exact to="/">
-                <NavItem eventKey={3}>
-                  Portfolio
-                </NavItem>
-              </LinkContainer>
-              <LinkContainer exact to="/">
-                <NavItem eventKey={4}>
-                  Services
-                </NavItem>
-              </LinkContainer>
-              <LinkContainer exact to="/blogs">
-                <NavItem eventKey={5}>
-                  Blog
-                </NavItem>
-              </LinkContainer>
-              <LinkContainer exact to="/">
-                <NavItem eventKey={6}>
-                  More
-                </NavItem>
-              </LinkContainer>
+              {/*<LinkContainer exact to="/">*/}
+                {/*<NavItem eventKey={2}>*/}
+                  {/*Home*/}
+                {/*</NavItem>*/}
+              {/*</LinkContainer>*/}
+              {/*<LinkContainer exact to="/">*/}
+                {/*<NavItem eventKey={3}>*/}
+                  {/*Portfolio*/}
+                {/*</NavItem>*/}
+              {/*</LinkContainer>*/}
+              {/*<LinkContainer exact to="/">*/}
+                {/*<NavItem eventKey={4}>*/}
+                  {/*Services*/}
+                {/*</NavItem>*/}
+              {/*</LinkContainer>*/}
+              {/*<LinkContainer exact to="/blogs">*/}
+                {/*<NavItem eventKey={5}>*/}
+                  {/*Blog*/}
+                {/*</NavItem>*/}
+              {/*</LinkContainer>*/}
+              {/*<LinkContainer exact to="/">*/}
+                {/*<NavItem eventKey={6}>*/}
+                  {/*More*/}
+                {/*</NavItem>*/}
+              {/*</LinkContainer>*/}
 
               {this.props.appState.pages.map(page =>
                   <LinkContainer key={'page_' + page.id} exact to={'/page/' + page.id}>

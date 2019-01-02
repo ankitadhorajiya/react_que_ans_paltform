@@ -41,7 +41,7 @@ class PopularPosts extends React.Component {
           <div className="panel-heading">
             <h3 className="panel-title">Popular Posts</h3>
           </div>
-          <div className="list-group">
+          <div className="list-group ">
             { this.renderBlogs(this.state.blogs) }
           </div>
         </div>
