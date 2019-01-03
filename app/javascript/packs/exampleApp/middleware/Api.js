@@ -18,6 +18,26 @@ module.exports = {
         return undefined
       })
   },
+  authenticateCreateUser: function(email, password, confirm_password) {
+    let data = {
+      user: {
+        email: email,
+        password: password,
+        confirm_password: confirm_password
+      }
+    };
+
+    return axios.post(API_HOST + '/api/users/create', data)
+      .then(function(response){
+        return response.data;
+        // return authenticateUser(response.data.email, password).then(data => {
+        //   return data;
+        // })
+      })
+      .catch(function(error){
+        return undefined
+      })
+  },
   getCurrentUser: function(jwt) {
     var config = {
       headers: {}

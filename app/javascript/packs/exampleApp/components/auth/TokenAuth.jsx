@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import AppHeader from '../../components/common/AppHeader';
 import AuthSignIn from '../../components/common/AuthSignIn';
+import AuthSignUp from '../../components/common/AuthSignUp';
 import AuthSignOut from '../../components/common/AuthSignOut';
 import Dashboard from '../../components/dashboard';
 import BlogPage from '../blog/blogPage';
@@ -30,6 +31,15 @@ class TokenAuthComponent extends React.Component {
                 render={(routeProps) => (
                     <AuthSignIn {...routeProps} propagateSignIn={this.propagateSignIn} />
                 )}
+            />
+            }
+
+            {!this.state.jwt &&
+            <Route
+              exact path="/sign-up"
+              render={(routeProps) => (
+                <AuthSignUp {...routeProps} propagateSignUp={this.propagateSignUp}/>
+              )}
             />
             }
 
@@ -91,6 +101,14 @@ class TokenAuthComponent extends React.Component {
 
     this.propagateSignIn = this.propagateSignIn.bind(this);
     this.propagateSignOut = this.propagateSignOut.bind(this);
+    this.propagateSignUp = this.propagateSignUp.bind(this);
+  }
+
+  propagateSignUp(jwt, history = undefined){
+    this.propagateSignIn(jwt, history);
+    // const { cookies } = this.props;
+    // cookies.set(this.state.cookieName, jwt, { path: '/' });
+    // this.getUser(history)
   }
 
   propagateSignIn(jwt, history = undefined) {

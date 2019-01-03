@@ -57,6 +57,13 @@ class AppHeaderComponent extends React.Component {
                 </NavItem>
               </LinkContainer>
               }
+              {!this.props.appState.jwt &&
+              <LinkContainer exact to="/sign-up">
+                <NavItem eventKey={10}>
+                  Sign Up
+                </NavItem>
+              </LinkContainer>
+              }
               {this.props.appState.jwt &&
               <LinkContainer exact to="/sign-out">
                 <NavItem eventKey={9}>
