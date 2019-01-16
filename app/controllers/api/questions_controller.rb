@@ -25,9 +25,6 @@ class Api::QuestionsController < ApplicationController
     else
       render json: {status: 404, message: 'Something went wrong.  !!'}
     end
-    p 11111111111111111111
-    p params
-    p 1111111111111111111111111
   end
 
   private
