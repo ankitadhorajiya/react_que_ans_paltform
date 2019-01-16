@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     post 'user/token' => 'user_token#create'
     get 'users/current' => 'users#current'
     post 'users/create' => 'users#create'
+    resources :questions
 
     resources :blogs, only: %i[index show]
     resources :questions, only: %i[index]

@@ -10,6 +10,8 @@ import AuthSignOut from '../../components/common/AuthSignOut';
 import Dashboard from '../../components/dashboard';
 import BlogPage from '../blog/blogPage';
 import Blog from '../blog/blog';
+import NewQuestionComponent from '../question/newQuestion';
+import QuestionComponent from '../question/question';
 
 const Api = require('../../middleware/Api');
 
@@ -17,7 +19,7 @@ class TokenAuthComponent extends React.Component {
 
   static propTypes = {
     cookies: instanceOf(Cookies).isRequired
-  }
+  };
 
   render() {
     return (
@@ -52,6 +54,16 @@ class TokenAuthComponent extends React.Component {
               />
             }
 
+            {this.state.jwt &&
+              <Route
+                exact path="/questions"
+                render={(routeProps) => (
+                  <NewQuestionComponent {...routeProps} propagateQuestion={this.propagateQuestion} />
+                  )
+                }
+              />
+            }
+
             <div className='container'>
               <Route
                 exact path="/"
@@ -73,6 +85,35 @@ class TokenAuthComponent extends React.Component {
                   <Blog {...routeProps} appState={this.state} />
                 )}
               />
+
+              <Route
+                exact path='/questions/:id'
+                render={(props) => (
+                  <QuestionComponent {...props} appState={this.state} />
+                )}
+              />
+
+              <Route
+                exact path='/questions/:id/edit'
+                render={(routeProps) => (
+                  <NewQuestionComponent {...routeProps} propagateQuestion={this.propagateQuestion} />
+                )}
+              />
+
+              {/*<Route*/}
+                {/*exact path="/questions"*/}
+                {/*render={(routeProps) => (*/}
+                  {/*<newQuestionComponent {...routeProps} appState={this.state} />*/}
+                  {/*)*/}
+                {/*}*/}
+              {/*/>*/}
+
+              {/*<Route*/}
+                {/*exact path='/questions'*/}
+                {/*render={(routeProps) => (*/}
+                  {/*<QuestionComponent {...routeProps} appState={this.state} />*/}
+                {/*)}*/}
+              {/*/>*/}
             </div>
           </div>
         </Router>
@@ -102,6 +143,7 @@ class TokenAuthComponent extends React.Component {
     this.propagateSignIn = this.propagateSignIn.bind(this);
     this.propagateSignOut = this.propagateSignOut.bind(this);
     this.propagateSignUp = this.propagateSignUp.bind(this);
+    this.propagateQuestion = this.propagateQuestion.bind(this);
   }
 
   propagateSignUp(jwt, history = undefined){
@@ -128,6 +170,14 @@ class TokenAuthComponent extends React.Component {
     if (history) history.push('/')
   }
 
+  propagateQuestion(data, history = undefined){
+    const { cookies } = this.props;
+    console.log(this.props);
+    if (history) history.push('/questions/'+data)
+    console.log(history)
+
+  }
+
   getUser(history = undefined) {
     const { cookies } = this.props;
     let jwt = cookies.get(this.state.cookieName);
@@ -140,7 +190,7 @@ class TokenAuthComponent extends React.Component {
           user_id: response.id,
           jwt: jwt
         });
-        if (history) history.push('/')
+        if (history) history.push('/');
       }
       else {
         // user has cookie but cannot load current user

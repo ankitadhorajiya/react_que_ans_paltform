@@ -1,6 +1,7 @@
 import React from 'react'
 import { Navbar, Nav, NavItem } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
+import TokenAuthComponent from "../auth/TokenAuth";
 
 class AppHeaderComponent extends React.Component {
 
@@ -15,6 +16,11 @@ class AppHeaderComponent extends React.Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav>
+              <LinkContainer exact to="/questions">
+                <NavItem eventKey={2}>
+                  Questions
+                </NavItem>
+              </LinkContainer>
               {/*<LinkContainer exact to="/">*/}
                 {/*<NavItem eventKey={2}>*/}
                   {/*Home*/}
@@ -40,7 +46,8 @@ class AppHeaderComponent extends React.Component {
                   {/*More*/}
                 {/*</NavItem>*/}
               {/*</LinkContainer>*/}
-
+            </Nav>
+            <Nav pullRight>
               {this.props.appState.pages.map(page =>
                   <LinkContainer key={'page_' + page.id} exact to={'/page/' + page.id}>
                     <NavItem eventKey={'7.' + page.id}>
@@ -48,8 +55,7 @@ class AppHeaderComponent extends React.Component {
                     </NavItem>
                   </LinkContainer>
               )}
-            </Nav>
-            <Nav pullRight>
+
               {!this.props.appState.jwt &&
               <LinkContainer exact to="/sign-in">
                 <NavItem eventKey={8}>
@@ -61,6 +67,13 @@ class AppHeaderComponent extends React.Component {
               <LinkContainer exact to="/sign-up">
                 <NavItem eventKey={10}>
                   Sign Up
+                </NavItem>
+              </LinkContainer>
+              }
+              {this.props.appState.jwt &&
+              <LinkContainer exact to="/questions">
+                <NavItem eventKey={11}>
+                  Ask Question?
                 </NavItem>
               </LinkContainer>
               }

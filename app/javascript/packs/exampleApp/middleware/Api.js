@@ -70,5 +70,43 @@ module.exports = {
       .catch(function (error) {
         return undefined
       })
+  },
+  createQuestion: function(que, desc, tag) {
+    let data = {
+      question: {
+        question: que,
+        description: desc,
+        tag: tag
+      }
+    };
+    return axios.post(API_HOST + '/api/questions', data)
+      .then(function(response){
+        return response.data
+      })
+  },
+  getQuestion: function(question_id){
+    return axios.get(API_HOST + '/api/questions/'+ question_id)
+      .then(function(response){
+        return response.data
+      })
+      .catch(function (error) {
+        return undefined
+      })
+  },
+  updateQuestion: function(question_id, que, desc, tag) {
+    let data = {
+      question: {
+        question: que,
+        description: desc,
+        tag: tag
+      }
+    };
+    return axios.patch(API_HOST + '/api/questions/'+ question_id, data)
+      .then(function(response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        return undefined
+    });
   }
 };
