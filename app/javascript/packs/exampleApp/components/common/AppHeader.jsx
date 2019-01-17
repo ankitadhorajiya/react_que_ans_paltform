@@ -16,7 +16,7 @@ class AppHeaderComponent extends React.Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav>
-              <LinkContainer exact to="/questions">
+              <LinkContainer exact to="/">
                 <NavItem eventKey={2}>
                   Questions
                 </NavItem>

@@ -60,8 +60,20 @@ class QuestionFormComponent extends React.Component {
     this.setDescription = this.setDescription.bind(this);
     this.setTagValues = this.setTagValues.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
   }
+
+  onKeyUp(event) {
+    let tagArray = [];
+    if (event.keyCode == 188) {
+      let tag = event.target.value.substr(0, event.target.value.indexOf(','));
+      console.log(tagArray.length);
+      tagArray.push(tag);
+      console.log(tagArray.length);
+      // console.log(tagArray);
+    }
+    // console.log(tag);
+  }
+
 
   handleSubmit(event) {
     event.preventDefault();
@@ -212,6 +224,7 @@ class QuestionFormComponent extends React.Component {
                   label="Tag"
                   placeholder="Tags"
                   value={this.state.tag.value || ''}
+                  onKeyUp={this.onKeyUp}
                   onChange={this.setTagValues}
                 />
               </FormGroup>

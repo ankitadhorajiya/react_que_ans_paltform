@@ -10,6 +10,13 @@
   animation: load8 1.1s infinite linear;
 }
 
+.tag {
+  background-color: #d9edf7;
+  text-align: center;
+  width: auto !important;
+  margin-left: 6px;
+}
+
 @keyframes load8 {
   0% {
     transform: rotate(0deg);

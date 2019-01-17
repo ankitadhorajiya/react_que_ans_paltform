@@ -108,5 +108,15 @@ module.exports = {
       .catch(function (error) {
         return undefined
     });
+  },
+  getAllQuestions: function() {
+    return axios.get(API_HOST + '/api/questions')
+      .then(function(response) {
+        return response.data;
+      })
+      .catch(function(error) {
+        return undefined
+      })
   }
+
 };

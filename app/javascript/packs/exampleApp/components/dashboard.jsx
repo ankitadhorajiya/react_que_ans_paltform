@@ -1,4 +1,5 @@
 import React from 'react'
+import QuestionPage from './question/questionPage';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -7,7 +8,7 @@ class Dashboard extends React.Component {
   render() {
     return (
         <div>
-          Dashboard Pages
+          <QuestionPage {...this.props}/>
         </div>
     )
   }

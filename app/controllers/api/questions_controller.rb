@@ -2,6 +2,8 @@ class Api::QuestionsController < ApplicationController
   before_action :authenticate_user, except: %i[index new create show update]
 
   def index
+    questions = Question.all
+    render json: questions.to_json, only: %i[id question description tag]
   end
 
   def create
