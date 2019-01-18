@@ -41,21 +41,25 @@ class QuestionPageComponent extends React.Component {
 
   getTags(tags) {
     let tagsList = tags.split(',');
-    let tagList = tagsList.map(data => {
-      return <div className='col-md-1 tag'>
-        {data}
-      </div>
+    let tagList = tagsList.map((data, index) => {
+      return (
+        <div className='col-md-1 tag' key={index}>
+          {data}
+        </div>
+      );
     });
     return tagList
   }
 
   renderQuestion(questions) {
     let questionsList = questions.map(data => {
-      return <Panel bsStyle='info' key={data.id}>
-        <Panel.Heading>{data.question}</Panel.Heading>
-        <Panel.Body>{this.getTags(data.tag)}</Panel.Body>
-        <Panel.Body>{data.description}</Panel.Body>
-      </Panel>
+      return (
+        <Panel bsStyle='info' key={data.id}>
+          <Panel.Heading>{data.question}</Panel.Heading>
+          <Panel.Body>{this.getTags(data.tag)}</Panel.Body>
+          <Panel.Body>{data.description}</Panel.Body>
+        </Panel>
+      );
     });
     return questionsList;
   }
