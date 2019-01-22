@@ -57,6 +57,16 @@ class AuthSignUpComponent extends React.Component {
                   />
               </FormGroup>
 
+              <FormGroup>
+                <ControlLabel>Interest field</ControlLabel>
+                <FormControl componentClass='select' multiple onChange={this.handleSelectChange}>
+                  <option value='other1'>other1</option>
+                  <option value='other2'>other2</option>
+                  <option value='other3'>other3</option>
+                  <option value='other4'>other4</option>
+                  <option value='other5'>other5</option>
+                </FormControl>
+              </FormGroup>
               <Button type="submit">
                 Sign Up
               </Button>
@@ -82,6 +92,10 @@ class AuthSignUpComponent extends React.Component {
         value: '',
         error: 'Password is required.'
       },
+      interest_area: {
+        value: '',
+        error: 'Please select at least one.'
+      },
       submit: {
         error: ''
       },
@@ -97,6 +111,7 @@ class AuthSignUpComponent extends React.Component {
     this.setEmail = this.setEmail.bind(this);
     this.setPassword = this.setPassword.bind(this);
     this.setConfirmPassword = this.setConfirmPassword.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -133,6 +148,23 @@ class AuthSignUpComponent extends React.Component {
     })
   }
 
+  handleSelectChange(event) {
+    var value = {};
+    let selected_val = event.target.options || ''
+    let errorMessage = selected_val.lengh === 0 ? 'Please select at least one.' : ''
+    for (var i = 0, l = selected_val.length; i < l; i++) {
+      if (selected_val[i].selected) {
+        value[i] = selected_val[i].value
+      }
+    }
+    this.setState({
+      interest_area: {
+        value: value,
+        error: errorMessage
+      }
+    })
+  }
+
   getFormErrors() {
     let fields = ['email', 'password', 'confirm_password', 'submit'];
     let errors = []
@@ -155,7 +187,7 @@ class AuthSignUpComponent extends React.Component {
     });
 
     this.state.password.value === this.state.confirm_password.value ?
-      Api.authenticateCreateUser(this.state.email.value, this.state.password.value, this.state.confirm_password.value).then(data => {
+      Api.authenticateCreateUser(this.state.email.value, this.state.password.value, this.state.confirm_password.value, this.state.interest_area.value).then(data => {
         if (data.status == 200) {
           Api.authenticateUser(this.state.email.value, this.state.password.value).then(jwt => {
             this.props.propagateSignUp(jwt, this.props.history)

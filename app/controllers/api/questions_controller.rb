@@ -2,30 +2,34 @@ class Api::QuestionsController < ApplicationController
   before_action :authenticate_user, except: %i[index new create show update]
 
   def index
-    questions = Question.all
+    questions = if params[:jwt].present?
+                  Question.all
+                else
+                  Question.first(5)
+                end
     render json: questions.to_json, only: %i[id question description tag]
   end
 
   def create
     question = Question.new(question_params)
     if question.save!
-      render json: {status: 200, question_id: question.id}
+      render json: { status: 200, question_id: question.id }
     else
-      render json: {status: 404, message: 'Question couldn\'t created.  !!'}
+      render json: { status: 404, message: 'Question couldn\'t created.  !!' }
     end
   end
 
   def show
     question = Question.find_by(id: params[:id])
-    render json: question.to_json(only: %i(id question description tag))
+    render json: question.to_json(only: %i[id question description tag])
   end
 
   def update
     question = Question.find_by(id: params[:id])
     if question.update(question_params)
-      render json: {status: 200, question_id: question.id}
+      render json: { status: 200, question_id: question.id }
     else
-      render json: {status: 404, message: 'Something went wrong.  !!'}
+      render json: { status: 404, message: 'Something went wrong.  !!' }
     end
   end
 

@@ -8,11 +8,11 @@ class Api::BlogsController < ApplicationController
         'order_by_likes'
       end
     render json: Blog.send(order)
-                     .as_json(only: %i(id title content tags like_count dislike_count))
+                     .as_json(only: %i[id title content tags like_count dislike_count])
   end
 
   def show
     render json: Blog.find_by(id: params[:id])
-                     .as_json(only: %i(id title content tags like_count dislike_count))
+                     .as_json(only: %i[id title content tags like_count dislike_count])
   end
 end

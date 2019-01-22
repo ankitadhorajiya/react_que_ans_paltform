@@ -20,7 +20,9 @@ class QuestionPageComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.getAllQuestions()
+    if (this.props.appState.jwt != undefined) {
+      this.getQuestions()
+    }
   }
 
   handleClick(event) {
@@ -29,14 +31,18 @@ class QuestionPageComponent extends React.Component {
     });
   }
 
-  getAllQuestions() {
-    Api.getAllQuestions().then(data => {
+  getQuestions() {
+    Api.getQuestions(this.props.appState.jwt).then(data => {
       this.setState({
         questions: (data != undefined ? data : []),
         currentPage: 1,
         todosPerPage: 10
       })
     })
+  }
+
+  getSelectedQuestions() {
+    Api.getSelectedQuestions
   }
 
   getTags(tags) {
@@ -55,7 +61,14 @@ class QuestionPageComponent extends React.Component {
     let questionsList = questions.map(data => {
       return (
         <Panel bsStyle='info' key={data.id}>
-          <Panel.Heading>{data.question}</Panel.Heading>
+          <Panel.Heading>
+            {data.question}
+            <LinkContainer key={'page_'} exact to={'/questions/' + data.id + '/edit'}>
+              <Button className='pull-right m-r-t-7'>
+                Edit
+              </Button>
+            </LinkContainer>
+          </Panel.Heading>
           <Panel.Body>{this.getTags(data.tag)}</Panel.Body>
           <Panel.Body>{data.description}</Panel.Body>
         </Panel>
@@ -85,7 +98,7 @@ class QuestionPageComponent extends React.Component {
     });
 
     return (
-      <div className='col-md-12'>
+      <div className='col-md-8 col-md-offset-2'>
         {this.renderQuestion(currentTodos)}
         <ul className='pagination pagination-lg'>
           {renderPageNumbers}

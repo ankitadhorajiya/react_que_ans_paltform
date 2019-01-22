@@ -30,18 +30,21 @@ class QuestionComponent extends React.Component {
       <div>
         { this.state.question &&
         <div>
-          <div className="panel panel-info">
-            <div className="panel-heading"># { this.state.question.question }</div>
-            <div className="panel-body">
-              <p> { this.state.question.description }</p>
-              <p> { this.state.question.tag }</p>
+          <div className='col-md-8'>
+            <div className="panel panel-info">
+              <div className="panel-heading"># { this.state.question.question }</div>
+              <div className="panel-body">
+                <p> { this.state.question.description }</p>
+                <p> { this.state.question.tag }</p>
+              </div>
+              <LinkContainer key={'page_' + this.state.question.id} exact to={'/questions/' + this.state.question.id + '/edit'}>
+                <Button>
+                  Edit Question
+                </Button>
+              </LinkContainer>
             </div>
-            <LinkContainer key={'page_' + this.state.question.id} exact to={'/questions/' + this.state.question.id + '/edit'}>
-              <Button>
-                Edit Question
-              </Button>
-            </LinkContainer>
           </div>
+
         </div>
         }
       </div>

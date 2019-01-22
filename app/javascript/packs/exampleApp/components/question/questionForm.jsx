@@ -66,12 +66,8 @@ class QuestionFormComponent extends React.Component {
     let tagArray = [];
     if (event.keyCode == 188) {
       let tag = event.target.value.substr(0, event.target.value.indexOf(','));
-      console.log(tagArray.length);
       tagArray.push(tag);
-      console.log(tagArray.length);
-      // console.log(tagArray);
     }
-    // console.log(tag);
   }
 
 
@@ -108,7 +104,6 @@ class QuestionFormComponent extends React.Component {
     }else {
       Api.createQuestion(this.state.question.value, this.state.description.value, this.state.tag.value).then(data => {
         if (data.status == 200) {
-          console.log(this.props.history);
           this.props.propagateQuestion(data.question_id, this.props.history);
         }else {
           this.setState({

@@ -18,12 +18,13 @@ module.exports = {
         return undefined
       })
   },
-  authenticateCreateUser: function(email, password, confirm_password) {
+  authenticateCreateUser: function(email, password, confirm_password, interest_area) {
     let data = {
       user: {
         email: email,
         password: password,
-        confirm_password: confirm_password
+        confirm_password: confirm_password,
+        interest: interest_area
       }
     };
 
@@ -109,8 +110,13 @@ module.exports = {
         return undefined
     });
   },
-  getAllQuestions: function() {
-    return axios.get(API_HOST + '/api/questions')
+  getQuestions: function(jwt) {
+    let data = {
+      params: {
+        jwt: jwt
+      }
+    }
+    return axios.get(API_HOST + '/api/questions', data)
       .then(function(response) {
         return response.data;
       })

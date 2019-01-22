@@ -56,6 +56,15 @@ class TokenAuthComponent extends React.Component {
 
             {this.state.jwt &&
               <Route
+                exact path="/"
+                render={(routeProps) => (
+                    <Dashboard {...routeProps}  appState={this.state} />
+                )}
+              />
+            }
+
+            {this.state.jwt &&
+              <Route
                 exact path="/questions"
                 render={(routeProps) => (
                   <NewQuestionComponent {...routeProps} propagateQuestion={this.propagateQuestion} />
@@ -152,7 +161,7 @@ class TokenAuthComponent extends React.Component {
     // cookies.set(this.state.cookieName, jwt, { path: '/' });
     // this.getUser(history)
   }
-
+  
   propagateSignIn(jwt, history = undefined) {
     const { cookies } = this.props
     cookies.set(this.state.cookieName, jwt, { path: '/' });
@@ -172,9 +181,7 @@ class TokenAuthComponent extends React.Component {
 
   propagateQuestion(data, history = undefined){
     const { cookies } = this.props;
-    console.log(this.props);
     if (history) history.push('/questions/'+data)
-    console.log(history)
 
   }
 

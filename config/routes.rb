@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   # API's
   namespace :api do
     post 'user/token' => 'user_token#create'
