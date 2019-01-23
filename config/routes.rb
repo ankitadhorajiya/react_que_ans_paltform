@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
     resources :blogs, only: %i[index show]
     resources :questions, only: %i[index]
+    resources :categories, only: %i[index]
   end
 
   # Application Entry-Point

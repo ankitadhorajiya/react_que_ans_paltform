@@ -18,13 +18,13 @@ module.exports = {
         return undefined
       })
   },
-  authenticateCreateUser: function(email, password, confirm_password, interest_area) {
+  authenticateCreateUser: function(email, password, confirm_password, category_ids) {
     let data = {
       user: {
         email: email,
         password: password,
         confirm_password: confirm_password,
-        interest: interest_area
+        category_ids: category_ids
       }
     };
 
@@ -37,6 +37,12 @@ module.exports = {
       })
       .catch(function(error){
         return undefined
+      })
+  },
+  getOptions: function() {
+    return axios.get(API_HOST + '/api/categories')
+      .then(function(response) {
+        return response.data;
       })
   },
   getCurrentUser: function(jwt) {
@@ -122,6 +128,12 @@ module.exports = {
       })
       .catch(function(error) {
         return undefined
+      })
+  },
+  deleteQuestion: function (id) {
+    return axios.delete(API_HOST+ '/api/questions/'+id)
+      .then(function(response) {
+        return response.data
       })
   }
 

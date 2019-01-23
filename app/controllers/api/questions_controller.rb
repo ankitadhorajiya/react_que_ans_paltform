@@ -1,5 +1,5 @@
 class Api::QuestionsController < ApplicationController
-  before_action :authenticate_user, except: %i[index new create show update]
+  before_action :authenticate_user, except: %i[index new create show update destroy]
 
   def index
     questions = if params[:jwt].present?
@@ -30,6 +30,15 @@ class Api::QuestionsController < ApplicationController
       render json: { status: 200, question_id: question.id }
     else
       render json: { status: 404, message: 'Something went wrong.  !!' }
+    end
+  end
+
+  def destroy
+    question = Question.find_by(id: params[:id])
+    if question.destroy
+      render json: { id: question.id, status: 200, message: 'Qustion destroyed successfully.. !!' }
+    else
+      render json: { status: 500, message: 'Something went wrong.. !!' }
     end
   end
 

@@ -3,7 +3,7 @@ class Api::BlogsController < ApplicationController
     order =
       case params[:type]
       when 'recent'
-        'order_by_recent'
+          'order_by_recent'
       when 'popular'
         'order_by_likes'
       end

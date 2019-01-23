@@ -1,6 +1,7 @@
 import React from 'react';
 import {Grid, Row, Col, FormGroup, FormControl, ControlLabel, Button, Alert, NavItem, Panel} from 'react-bootstrap';
 import {LinkContainer} from "react-router-bootstrap";
+import $ from 'jquery';
 
 const Api = require('../../middleware/Api');
 
@@ -9,7 +10,8 @@ class QuestionPageComponent extends React.Component {
     return {
       questions: [],
       currentPage: 1,
-      todosPerPage: 10
+      todosPerPage: 10,
+      clicked: 'question-panel'
     };
   }
 
@@ -17,6 +19,7 @@ class QuestionPageComponent extends React.Component {
     super(props);
     this.state = this.setDefault()
     this.handleClick = this.handleClick.bind(this);
+    this.handleDeleteQuestion = this.handleDeleteQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -41,8 +44,12 @@ class QuestionPageComponent extends React.Component {
     })
   }
 
-  getSelectedQuestions() {
-    Api.getSelectedQuestions
+  handleDeleteQuestion(event) {
+    Api.deleteQuestion(event.target.id).then(data => {
+      if (data.status == 200) {
+        $('.questionPanel-'+ data.id).addClass('hide')
+      }
+    })
   }
 
   getTags(tags) {
@@ -60,14 +67,20 @@ class QuestionPageComponent extends React.Component {
   renderQuestion(questions) {
     let questionsList = questions.map(data => {
       return (
-        <Panel bsStyle='info' key={data.id}>
+        <Panel bsStyle='info' key={data.id} className={'questionPanel-'+ data.id} >
           <Panel.Heading>
             {data.question}
-            <LinkContainer key={'page_'} exact to={'/questions/' + data.id + '/edit'}>
+            <LinkContainer exact to={'/questions/' + data.id + '/edit'}>
               <Button className='pull-right m-r-t-7'>
                 Edit
               </Button>
             </LinkContainer>
+            <Button className='pull-right m-r-t-7'>
+              {/*<a onClick={this.handleDeleteQuestion} id={data.id} className={'questionPanel-'+ data.id}>*/}
+              <a onClick={this.handleDeleteQuestion} id={data.id}>
+                Delete
+              </a>
+            </Button>
           </Panel.Heading>
           <Panel.Body>{this.getTags(data.tag)}</Panel.Body>
           <Panel.Body>{data.description}</Panel.Body>
