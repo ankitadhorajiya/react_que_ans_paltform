@@ -1,10 +1,10 @@
 import React from 'react'
-import { Grid, Row, Col, FormGroup, FormControl, ControlLabel, Button, Alert } from 'react-bootstrap'
+import {Grid, Row, Col, FormGroup, FormControl, ControlLabel, Button, Alert} from 'react-bootstrap'
+import Star from '../../Star'
 
 const Api = require('../../middleware/Api');
 
 class QuestionFormComponent extends React.Component {
-
 
 
   defaultState() {
@@ -28,7 +28,9 @@ class QuestionFormComponent extends React.Component {
         error: ''
       },
       formSubmitted: false,
-      editForm: false
+      editForm: false,
+      starsSelected: 1,
+      totalStars: 5
     }
 
   }
@@ -45,7 +47,7 @@ class QuestionFormComponent extends React.Component {
           error: ''
         },
         tag: {
-          value: (data !== undefined ? data.tag: ''),
+          value: (data !== undefined ? data.tag : ''),
           error: ''
         },
         editForm: true
@@ -60,6 +62,15 @@ class QuestionFormComponent extends React.Component {
     this.setDescription = this.setDescription.bind(this);
     this.setTagValues = this.setTagValues.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.changeStar = this.changeStar.bind(this);
+  }
+
+  changeStar(n) {
+    console.log('****************');
+    console.log(n);
+    this.setState({
+      starsSelected: n
+    })
   }
 
   onKeyUp(event) {
@@ -72,6 +83,12 @@ class QuestionFormComponent extends React.Component {
 
 
   handleSubmit(event) {
+    console.log(this.refs);
+    const {_question, _description, _tag } = this.refs
+    // alert(`New Color: ${_question.value}`)
+    alert(_question);
+    alert(_description);
+    alert(_tag);
     event.preventDefault();
     this.setState({
       question: {
@@ -89,23 +106,23 @@ class QuestionFormComponent extends React.Component {
     if (this.state.editForm == true) {
       Api.updateQuestion(this.props.match.params.id, this.state.question.value, this.state.description.value, this.state.tag.value)
         .then(data => {
-        if (data.status == 200) {
-          this.props.propagateQuestion(data.question_id, this.props.history);
-        }else {
-          this.setState({
-            question: {
-              submit: {
-                error: data.message
+          if (data.status == 200) {
+            this.props.propagateQuestion(data.question_id, this.props.history);
+          } else {
+            this.setState({
+              question: {
+                submit: {
+                  error: data.message
+                }
               }
-            }
-          })
-        }
-      });
-    }else {
+            })
+          }
+        });
+    } else {
       Api.createQuestion(this.state.question.value, this.state.description.value, this.state.tag.value).then(data => {
         if (data.status == 200) {
           this.props.propagateQuestion(data.question_id, this.props.history);
-        }else {
+        } else {
           this.setState({
             question: {
               submit: {
@@ -118,7 +135,7 @@ class QuestionFormComponent extends React.Component {
     }
   }
 
-  getFormErrors(){
+  getFormErrors() {
     let fields = ['question', 'description', 'tag', 'submit'];
     let errors = [];
     fields.map(field => {
@@ -171,8 +188,9 @@ class QuestionFormComponent extends React.Component {
   }
 
 
+  render() {
+    const {totalStars, starsSelected } = this.state;
 
-  render(){
     return (
       <Grid>
         <Row>
@@ -182,28 +200,30 @@ class QuestionFormComponent extends React.Component {
               <strong>Please correct the following errors:</strong>
               <ul>
                 {
-                  this.getFormErrors().map((message,index) =>
-                    <li key={'error_message_'+index}>{message}</li>
+                  this.getFormErrors().map((message, index) =>
+                    <li key={'error_message_' + index}>{message}</li>
                   )
                 }
               </ul>
             </Alert>
             }
-            <form  onSubmit={this.handleSubmit} >
+            <form onSubmit={this.handleSubmit}>
               <FormGroup>
                 <ControlLabel>Question</ControlLabel>
                 <FormControl
-                 id="question"
-                 type="text"
-                 label="Question"
-                 placeholder="Write your question"
-                 value={this.state.question.value || ''}
-                 onChange={this.setQuestion}
+                  ref='_question'
+                  id="question"
+                  type="text"
+                  label="Question"
+                  placeholder="Write your question"
+                  value={this.state.question.value || ''}
+                  onChange={this.setQuestion}
                 />
               </FormGroup>
               <FormGroup>
                 <ControlLabel>Description</ControlLabel>
                 <FormControl
+                  ref='_description'
                   componentClass="textarea"
                   id="description"
                   label="Question"
@@ -215,6 +235,7 @@ class QuestionFormComponent extends React.Component {
               <FormGroup>
                 <ControlLabel>Tags</ControlLabel>
                 <FormControl
+                  ref='_tag'
                   id="questionTag"
                   label="Tag"
                   placeholder="Tags"
@@ -227,6 +248,14 @@ class QuestionFormComponent extends React.Component {
                 Post Question
               </Button>
             </form>
+            <div className='star-rating'>
+              {
+                [...Array(totalStars)].map((n, i) =>
+                  <Star key={i} star={i} />
+                )
+              }
+              <p>{starsSelected} of {totalStars} starts</p>
+            </div>
           </Col>
         </Row>
       </Grid>

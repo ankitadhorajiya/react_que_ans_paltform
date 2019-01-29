@@ -4,10 +4,12 @@ class Api::QuestionsController < ApplicationController
   def index
     questions = if params[:jwt].present?
                   Question.all
+                elsif params[:topic].present?
+                  Question.topic(params[:topic])
                 else
                   Question.first(5)
                 end
-    render json: questions.to_json, only: %i[id question description tag]
+    render json: questions.to_json,   only: %i[id question description tag]
   end
 
   def create

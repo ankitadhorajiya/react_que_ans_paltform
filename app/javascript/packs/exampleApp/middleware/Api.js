@@ -116,10 +116,11 @@ module.exports = {
         return undefined
     });
   },
-  getQuestions: function(jwt) {
+  getQuestions: function(jwt, topic) {
     let data = {
       params: {
-        jwt: jwt
+        jwt: jwt,
+        topic: topic
       }
     }
     return axios.get(API_HOST + '/api/questions', data)

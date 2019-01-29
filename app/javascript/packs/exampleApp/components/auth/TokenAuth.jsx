@@ -12,6 +12,7 @@ import BlogPage from '../blog/blogPage';
 import Blog from '../blog/blog';
 import NewQuestionComponent from '../question/newQuestion';
 import QuestionComponent from '../question/question';
+import CategoryQuestionComponent from '../question/categoryQuestion';
 
 const Api = require('../../middleware/Api');
 
@@ -63,13 +64,13 @@ class TokenAuthComponent extends React.Component {
               />
             }
 
-            {this.state.jwt &&
+            {
+              this.state.jwt &&
               <Route
                 exact path="/questions"
                 render={(routeProps) => (
                   <NewQuestionComponent {...routeProps} propagateQuestion={this.propagateQuestion} />
-                  )
-                }
+                )}
               />
             }
 
@@ -105,7 +106,14 @@ class TokenAuthComponent extends React.Component {
               <Route
                 exact path='/questions/:id/edit'
                 render={(routeProps) => (
-                  <NewQuestionComponent {...routeProps} propagateQuestion={this.propagateQuestion} />
+                  <NewQuestionComponent {...routeProps} propagateQuestion={this.propagateQuestion}/>
+                )}
+              />
+
+              <Route
+                exact path='/topic/:id'
+                render={(routeProps) => (
+                  <CategoryQuestionComponent {...routeProps} appState={this.state} />
                 )}
               />
 
@@ -140,6 +148,7 @@ class TokenAuthComponent extends React.Component {
       email: undefined,
       jwt: undefined,
       user_id: undefined,
+      categories: undefined,
       pages: []
     }
   }
@@ -182,7 +191,6 @@ class TokenAuthComponent extends React.Component {
   propagateQuestion(data, history = undefined){
     const { cookies } = this.props;
     if (history) history.push('/questions/'+data)
-
   }
 
   getUser(history = undefined) {
@@ -193,8 +201,9 @@ class TokenAuthComponent extends React.Component {
     Api.getCurrentUser(jwt).then(response => {
       if (response !== undefined) {
         this.setState({
-          email: response.email,
-          user_id: response.id,
+          email: response.user.email,
+          user_id: response.user.id,
+          categories: response.categories,
           jwt: jwt
         });
         if (history) history.push('/');

@@ -1,5 +1,20 @@
 import React from 'react';
-import {Grid, Row, Col, FormGroup, FormControl, ControlLabel, Button, Alert, NavItem, Panel} from 'react-bootstrap';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+
+import {
+  Grid,
+  Row,
+  Col,
+  FormGroup,
+  FormControl,
+  ControlLabel,
+  Button,
+  Alert,
+  NavItem,
+  Panel,
+  ListGroup,
+  ListGroupItem
+} from 'react-bootstrap';
 import {LinkContainer} from "react-router-bootstrap";
 import $ from 'jquery';
 
@@ -11,13 +26,14 @@ class QuestionPageComponent extends React.Component {
       questions: [],
       currentPage: 1,
       todosPerPage: 10,
-      clicked: 'question-panel'
+      categories: [],
+      options: []
     };
   }
 
   constructor(props) {
     super(props);
-    this.state = this.setDefault()
+    this.state = this.setDefault();
     this.handleClick = this.handleClick.bind(this);
     this.handleDeleteQuestion = this.handleDeleteQuestion.bind(this);
   }
@@ -35,19 +51,28 @@ class QuestionPageComponent extends React.Component {
   }
 
   getQuestions() {
-    Api.getQuestions(this.props.appState.jwt).then(data => {
+    var topic = undefined;
+    Api.getQuestions(this.props.appState.jwt, topic).then(data => {
       this.setState({
         questions: (data != undefined ? data : []),
         currentPage: 1,
-        todosPerPage: 10
+        todosPerPage: 10,
+        categories: (this.props.appState.categories != undefined ? this.props.appState.categories : [])
       })
-    })
+    });
+    Api.getOptions().then(data => {
+      if (data.length != 0) {
+        this.setState({
+          options: (data != undefined ? data : [])
+        });
+      }
+    });
   }
 
   handleDeleteQuestion(event) {
     Api.deleteQuestion(event.target.id).then(data => {
       if (data.status == 200) {
-        $('.questionPanel-'+ data.id).addClass('hide')
+        $('.questionPanel-' + data.id).addClass('hide')
       }
     })
   }
@@ -67,7 +92,7 @@ class QuestionPageComponent extends React.Component {
   renderQuestion(questions) {
     let questionsList = questions.map(data => {
       return (
-        <Panel bsStyle='info' key={data.id} className={'questionPanel-'+ data.id} >
+        <Panel key={data.id} className={'questionPanel-' + data.id}>
           <Panel.Heading>
             {data.question}
             <LinkContainer exact to={'/questions/' + data.id + '/edit'}>
@@ -76,7 +101,6 @@ class QuestionPageComponent extends React.Component {
               </Button>
             </LinkContainer>
             <Button className='pull-right m-r-t-7'>
-              {/*<a onClick={this.handleDeleteQuestion} id={data.id} className={'questionPanel-'+ data.id}>*/}
               <a onClick={this.handleDeleteQuestion} id={data.id}>
                 Delete
               </a>
@@ -110,12 +134,52 @@ class QuestionPageComponent extends React.Component {
       );
     });
 
+    const categories = this.state.categories;
+    const renderCategories = categories.map(category => {
+      return (
+        <ListGroup key={category.id} className='text-center'>
+          <ListGroupItem>
+            <LinkContainer exact to={'topic/'+ category.name}>
+              <a>{category.name}</a>
+            </LinkContainer>
+          </ListGroupItem>
+        </ListGroup>
+      )
+    });
+    const AllOptions = this.state.options;
+    const renderAllOptions = AllOptions.map(option => {
+      return (
+        <ListGroup key={option.id} className='text-center'>
+          <ListGroupItem>
+            {option.name}
+          </ListGroupItem>
+        </ListGroup>
+      )
+    });
+
     return (
-      <div className='col-md-8 col-md-offset-2'>
-        {this.renderQuestion(currentTodos)}
-        <ul className='pagination pagination-lg'>
-          {renderPageNumbers}
-        </ul>
+      <div className='col-md-12'>
+        <div className='col-md-2 col-md-offset-1'>
+          <Panel>
+            {renderAllOptions}
+          </Panel>
+        </div>
+        <div className='col-md-6'>
+          {this.renderQuestion(currentTodos)}
+          <ul className='pagination pagination-lg'>
+            {renderPageNumbers}
+          </ul>
+        </div>
+        {
+          categories.length != 0 ? (
+            <div className='col-md-2'>
+              <Panel>
+                <Panel.Heading className='text-center'>Your Interested Topics</Panel.Heading>
+                {renderCategories}
+              </Panel>
+            </div>
+          ) : ''
+        }
       </div>
     )
   }

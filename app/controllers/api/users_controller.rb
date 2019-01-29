@@ -2,7 +2,7 @@ class Api::UsersController < ApplicationController
   before_action :authenticate_user, only: :current
 
   def current
-    render json: current_user.as_json(only: %i[id email])
+    render json: {user: current_user.as_json(only: %i[id email]), categories: current_user.categories.as_json(only: %i[id name])}
   end
 
   def create

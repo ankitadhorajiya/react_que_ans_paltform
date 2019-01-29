@@ -1,14 +1,14 @@
 import React from 'react'
-import QuestionPage from './question/questionPage';
+import QuestionPageComponent from './question/questionPage';
 
 class Dashboard extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
   render() {
     return (
         <div>
-          <QuestionPage {...this.props}/>
+          <QuestionPageComponent {...this.props} />
         </div>
     )
   }
