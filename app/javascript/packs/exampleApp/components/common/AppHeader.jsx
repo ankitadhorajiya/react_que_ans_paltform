@@ -1,10 +1,13 @@
 import React from 'react'
-import { Navbar, Nav, NavItem } from 'react-bootstrap'
+import { Navbar, Nav, NavItem, FormControl } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import TokenAuthComponent from "../auth/TokenAuth";
 
 class AppHeaderComponent extends React.Component {
 
+  constructor(props) {
+    super(props)
+  }
   render() {
     return (
         <Navbar inverse collapseOnSelect>
@@ -55,7 +58,17 @@ class AppHeaderComponent extends React.Component {
                     </NavItem>
                   </LinkContainer>
               )}
-
+              {
+                <LinkContainer exact to='/'>
+                  <NavItem eventKey={12}>
+                    <FormControl
+                      type='text'
+                      id='questionSearch'
+                      placeholder='Search Question'
+                    />
+                  </NavItem>
+                </LinkContainer>
+              }
               {!this.props.appState.jwt &&
               <LinkContainer exact to="/sign-in">
                 <NavItem eventKey={8}>
@@ -90,9 +103,6 @@ class AppHeaderComponent extends React.Component {
     )
   }
 
-  constructor(props) {
-    super(props)
-  }
 
 }
 

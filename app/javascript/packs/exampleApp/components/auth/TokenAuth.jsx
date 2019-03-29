@@ -13,6 +13,7 @@ import Blog from '../blog/blog';
 import NewQuestionComponent from '../question/newQuestion';
 import QuestionComponent from '../question/question';
 import CategoryQuestionComponent from '../question/categoryQuestion';
+import SearchComponent from '../question/search'
 
 const Api = require('../../middleware/Api');
 
@@ -83,6 +84,13 @@ class TokenAuthComponent extends React.Component {
               />
 
               <Route
+                exact path='/'
+                render={(routeProps) => (
+                  <SearchComponent {...routeProps} appState={this.state}/>
+                )}
+              />
+
+              <Route
                 exact path="/blogs"
                 render={(routeProps) => (
                     <BlogPage {...routeProps} appState={this.state}/>
@@ -116,21 +124,6 @@ class TokenAuthComponent extends React.Component {
                   <CategoryQuestionComponent {...routeProps} appState={this.state} />
                 )}
               />
-
-              {/*<Route*/}
-                {/*exact path="/questions"*/}
-                {/*render={(routeProps) => (*/}
-                  {/*<newQuestionComponent {...routeProps} appState={this.state} />*/}
-                  {/*)*/}
-                {/*}*/}
-              {/*/>*/}
-
-              {/*<Route*/}
-                {/*exact path='/questions'*/}
-                {/*render={(routeProps) => (*/}
-                  {/*<QuestionComponent {...routeProps} appState={this.state} />*/}
-                {/*)}*/}
-              {/*/>*/}
             </div>
           </div>
         </Router>

@@ -86,9 +86,6 @@ class QuestionFormComponent extends React.Component {
     console.log(this.refs);
     const {_question, _description, _tag } = this.refs
     // alert(`New Color: ${_question.value}`)
-    alert(_question);
-    alert(_description);
-    alert(_tag);
     event.preventDefault();
     this.setState({
       question: {

@@ -66,3 +66,16 @@ gem 'knock'
 
 # Front-End to make API Calls
 gem 'rack-cors'
+
+gem 'awesome_rails_console'
+
+gem 'rubocop'
+
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
+
+gem 'smtpapi'
+# gem 'sendgrid-actionmailer'
+gem 'sendgrid-ruby'
+
+
