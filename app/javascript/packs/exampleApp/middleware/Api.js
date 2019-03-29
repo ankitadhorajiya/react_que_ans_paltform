@@ -136,6 +136,12 @@ module.exports = {
       .then(function(response) {
         return response.data
       })
+  },
+  searchQuestion: function(query) {
+    return axios.get(API_HOST+ '/api/questions/search?query=' + query)
+      .then(function (response) {
+        return response.data.questions;
+      })
   }
 
 };

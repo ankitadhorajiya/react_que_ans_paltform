@@ -1,20 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+// import TextField from '@material-ui/core/TextField'
+// import { ReactiveBase, TextField, ResultList, SelectedFilters } from '@appbaseio/reactivesearch';
 
-import {
-  Grid,
-  Row,
-  Col,
-  FormGroup,
-  FormControl,
-  ControlLabel,
-  Button,
-  Alert,
-  NavItem,
-  Panel,
-  ListGroup,
-  ListGroupItem
-} from 'react-bootstrap';
+import {Grid, Row, Col, FormGroup, FormControl, ControlLabel, Button, Alert, NavItem, Panel, ListGroup, ListGroupItem} from 'react-bootstrap';
 import {LinkContainer} from "react-router-bootstrap";
 import $ from 'jquery';
 
@@ -25,9 +13,10 @@ class QuestionPageComponent extends React.Component {
     return {
       questions: [],
       currentPage: 1,
-      todosPerPage: 10,
+      todosPerPage: 2,
       categories: [],
-      options: []
+      options: [],
+      searchedQuestions: ''
     };
   }
 
@@ -36,6 +25,7 @@ class QuestionPageComponent extends React.Component {
     this.state = this.setDefault();
     this.handleClick = this.handleClick.bind(this);
     this.handleDeleteQuestion = this.handleDeleteQuestion.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentDidMount() {
@@ -56,7 +46,7 @@ class QuestionPageComponent extends React.Component {
       this.setState({
         questions: (data != undefined ? data : []),
         currentPage: 1,
-        todosPerPage: 10,
+        todosPerPage: 2,
         categories: (this.props.appState.categories != undefined ? this.props.appState.categories : [])
       })
     });
@@ -114,6 +104,22 @@ class QuestionPageComponent extends React.Component {
     return questionsList;
   }
 
+  handleSearch(event) {
+    if(event.target.value !== '') {
+      Api.searchQuestion(event.target.value).then((data) => {
+        let questions = [];
+        data.map((question) =>{
+          questions.push(question._source)
+        });
+        this.setState({
+          questions: questions
+        });
+      })
+    }else {
+      this.getQuestions()
+    }
+  }
+
   render() {
     const {questions, currentPage, todosPerPage} = this.state;
     const indexOfLastTodo = currentPage * todosPerPage;
@@ -158,29 +164,44 @@ class QuestionPageComponent extends React.Component {
     });
 
     return (
-      <div className='col-md-12'>
-        <div className='col-md-2 col-md-offset-1'>
-          <Panel>
-            {renderAllOptions}
-          </Panel>
+      <div>
+        <div className='col-md-12'>
+          <form>
+            <FormGroup>
+              <FormControl
+                id='questionSearch'
+                type='text'
+                placeholder='Search question here'
+                onKeyUp={this.handleSearch}
+              />
+            </FormGroup>
+          </form>
         </div>
-        <div className='col-md-6'>
-          {this.renderQuestion(currentTodos)}
-          <ul className='pagination pagination-lg'>
-            {renderPageNumbers}
-          </ul>
+        <div className='col-md-12'>
+          <div className='col-md-2 col-md-offset-1'>
+            <Panel>
+              {renderAllOptions}
+            </Panel>
+          </div>
+          <div className='col-md-6'>
+            {this.renderQuestion(currentTodos)}
+            <ul className='pagination pagination-lg'>
+              {renderPageNumbers}
+            </ul>
+          </div>
+          {
+            categories.length != 0 ? (
+              <div className='col-md-2'>
+                <Panel>
+                  <Panel.Heading className='text-center'>Your Interested Topics</Panel.Heading>
+                  {renderCategories}
+                </Panel>
+              </div>
+            ) : ''
+          }
         </div>
-        {
-          categories.length != 0 ? (
-            <div className='col-md-2'>
-              <Panel>
-                <Panel.Heading className='text-center'>Your Interested Topics</Panel.Heading>
-                {renderCategories}
-              </Panel>
-            </div>
-          ) : ''
-        }
       </div>
+
     )
   }
 }
