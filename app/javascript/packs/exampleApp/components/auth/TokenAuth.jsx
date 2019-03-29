@@ -13,7 +13,6 @@ import Blog from '../blog/blog';
 import NewQuestionComponent from '../question/newQuestion';
 import QuestionComponent from '../question/question';
 import CategoryQuestionComponent from '../question/categoryQuestion';
-import SearchComponent from '../question/search'
 
 const Api = require('../../middleware/Api');
 
@@ -80,13 +79,6 @@ class TokenAuthComponent extends React.Component {
                 exact path="/"
                 render={(routeProps) => (
                     <Dashboard {...routeProps} appState={this.state}/>
-                )}
-              />
-
-              <Route
-                exact path='/'
-                render={(routeProps) => (
-                  <SearchComponent {...routeProps} appState={this.state}/>
                 )}
               />
 
