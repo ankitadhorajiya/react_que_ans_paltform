@@ -20,6 +20,11 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  def send_mail
+    ContactMailer.send_mail.deliver_now
+    head :ok
+  end
+
   private
 
   def user_params
