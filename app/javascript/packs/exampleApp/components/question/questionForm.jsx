@@ -66,8 +66,6 @@ class QuestionFormComponent extends React.Component {
   }
 
   changeStar(n) {
-    console.log('****************');
-    console.log(n);
     this.setState({
       starsSelected: n
     })
@@ -83,7 +81,6 @@ class QuestionFormComponent extends React.Component {
 
 
   handleSubmit(event) {
-    console.log(this.refs);
     const {_question, _description, _tag } = this.refs
     // alert(`New Color: ${_question.value}`)
     event.preventDefault();
@@ -104,6 +101,8 @@ class QuestionFormComponent extends React.Component {
       Api.updateQuestion(this.props.match.params.id, this.state.question.value, this.state.description.value, this.state.tag.value)
         .then(data => {
           if (data.status == 200) {
+            console.log(data)
+            console.log(this.props.history, 'history');
             this.props.propagateQuestion(data.question_id, this.props.history);
           } else {
             this.setState({

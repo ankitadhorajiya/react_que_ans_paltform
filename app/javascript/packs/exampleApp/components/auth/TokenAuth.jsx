@@ -1,7 +1,7 @@
 import React from 'react';
-import { instanceOf } from 'prop-types';
-import { withCookies, Cookies } from 'react-cookie';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import {instanceOf} from 'prop-types';
+import {withCookies, Cookies} from 'react-cookie';
+import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
 
 import AppHeader from '../../components/common/AppHeader';
 import AuthSignIn from '../../components/common/AuthSignIn';
@@ -24,82 +24,63 @@ class TokenAuthComponent extends React.Component {
 
   render() {
     return (
-        <Router>
-          <div>
-            <AppHeader appState={this.state} />
+      <Router history={history}>
+        <div>
+          <AppHeader appState={this.state}/>
 
-            {!this.state.jwt &&
-            <Route
-                exact path="/sign-in"
-                render={(routeProps) => (
-                    <AuthSignIn {...routeProps} propagateSignIn={this.propagateSignIn} />
-                )}
-            />
-            }
+          {!this.state.jwt &&
+          <Route
+            exact path="/sign-in"
+            render={(routeProps) => (
+              <AuthSignIn {...routeProps} propagateSignIn={this.propagateSignIn}/>
+            )}
+          />
+          }
 
-            {!this.state.jwt &&
+          {!this.state.jwt &&
+          <Route
+            exact path="/sign-up"
+            render={(routeProps) => (
+              <AuthSignUp {...routeProps} propagateSignUp={this.propagateSignUp}/>
+            )}
+          />
+          }
+
+          {this.state.jwt &&
+          <Route
+            exact path="/sign-out"
+            render={(routeProps) => (
+              <AuthSignOut {...routeProps} propagateSignOut={this.propagateSignOut}/>
+            )}
+          />
+          }
+
+          {this.state.jwt &&
+          <Route
+            exact path="/" handler
+            render={(routeProps) => (
+              <Dashboard {...routeProps} appState={this.state}/>
+            )}
+          />
+          }
+
+          {
+            this.state.jwt &&
             <Route
-              exact path="/sign-up"
+              exact path="/questions"
               render={(routeProps) => (
-                <AuthSignUp {...routeProps} propagateSignUp={this.propagateSignUp}/>
+                <NewQuestionComponent {...routeProps} propagateQuestion={this.propagateQuestion}/>
               )}
             />
-            }
+          }
 
-            {this.state.jwt &&
-              <Route
-                exact path="/sign-out"
-                render={(routeProps) => (
-                    <AuthSignOut {...routeProps} propagateSignOut={this.propagateSignOut} />
-                )}
-              />
-            }
+          <div className='container'>
+            <Switch>
 
-            {this.state.jwt &&
               <Route
                 exact path="/"
                 render={(routeProps) => (
-                    <Dashboard {...routeProps}  appState={this.state} />
-                )}
-              />
-            }
-
-            {
-              this.state.jwt &&
-              <Route
-                exact path="/questions"
-                render={(routeProps) => (
-                  <NewQuestionComponent {...routeProps} propagateQuestion={this.propagateQuestion} />
-                )}
-              />
-            }
-
-            <div className='container'>
-              <Route
-                exact path="/"
-                render={(routeProps) => (
-                    <Dashboard {...routeProps} appState={this.state}/>
-                )}
-              />
-
-              <Route
-                exact path="/blogs"
-                render={(routeProps) => (
-                    <BlogPage {...routeProps} appState={this.state}/>
-                )}
-              />
-
-              <Route
-                exact path='/blogs/:id'
-                render={(routeProps) => (
-                  <Blog {...routeProps} appState={this.state} />
-                )}
-              />
-
-              <Route
-                exact path='/questions/:id'
-                render={(props) => (
-                  <QuestionComponent {...props} appState={this.state} />
+                  <Dashboard {...routeProps} appState={this.state}/>
                 )}
               />
 
@@ -111,14 +92,37 @@ class TokenAuthComponent extends React.Component {
               />
 
               <Route
-                exact path='/topic/:id'
-                render={(routeProps) => (
-                  <CategoryQuestionComponent {...routeProps} appState={this.state} />
+                exact path='/questions/:id'
+                render={(props) => (
+                  <QuestionComponent {...props} appState={this.state}/>
                 )}
               />
-            </div>
+
+              <Route
+                exact path="/blogs"
+                render={(routeProps) => (
+                  <BlogPage {...routeProps} appState={this.state}/>
+                )}
+              />
+
+              <Route
+                exact path='/blogs/:id'
+                render={(routeProps) => (
+                  <Blog {...routeProps} appState={this.state}/>
+                )}
+              />
+
+              <Route
+                exact path='/topic/:id'
+                render={(routeProps) => (
+                  <CategoryQuestionComponent {...routeProps} appState={this.state}/>
+                )}
+              />
+            </Switch>
+
           </div>
-        </Router>
+        </div>
+      </Router>
     )
   }
 
@@ -149,21 +153,21 @@ class TokenAuthComponent extends React.Component {
     this.propagateQuestion = this.propagateQuestion.bind(this);
   }
 
-  propagateSignUp(jwt, history = undefined){
+  propagateSignUp(jwt, history = undefined) {
     this.propagateSignIn(jwt, history);
     // const { cookies } = this.props;
     // cookies.set(this.state.cookieName, jwt, { path: '/' });
     // this.getUser(history)
   }
-  
+
   propagateSignIn(jwt, history = undefined) {
-    const { cookies } = this.props
-    cookies.set(this.state.cookieName, jwt, { path: '/' });
+    const {cookies} = this.props
+    cookies.set(this.state.cookieName, jwt, {path: '/'});
     this.getUser(history)
   }
 
   propagateSignOut(history = undefined) {
-    const { cookies } = this.props;
+    const {cookies} = this.props;
     cookies.remove(this.state.cookieName);
     this.setState({
       email: undefined,
@@ -173,13 +177,16 @@ class TokenAuthComponent extends React.Component {
     if (history) history.push('/')
   }
 
-  propagateQuestion(data, history = undefined){
-    const { cookies } = this.props;
-    if (history) history.push('/questions/'+data)
+  propagateQuestion(data, history = undefined) {
+    const {cookies} = this.props;
+    console.log(history, 'token history')
+    if (history) history.push('/questions/' + data, this.state.user_id)
+    console.log(history, 'after push token history')
+    // this.props.history.push('/questions/' +data)
   }
 
   getUser(history = undefined) {
-    const { cookies } = this.props;
+    const {cookies} = this.props;
     let jwt = cookies.get(this.state.cookieName);
     if (!jwt) return null;
 

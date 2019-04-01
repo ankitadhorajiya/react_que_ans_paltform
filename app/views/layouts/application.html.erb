@@ -16,6 +16,12 @@
   </head>
 
   <body>
-    <%= yield %>
+    <%= link_to 'send email', api_users_send_mail_path, remote: true %>
+    <div id='example-app'>
+      THis is Example DIV
+    </div>
+
+
+    <%#= yield %>
   </body>
 </html>
